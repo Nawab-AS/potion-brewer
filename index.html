@@ -15,13 +15,15 @@
     </header>
     <main>
         <div class="cauldron">
-            <p>lorem500</p>
         </div>
         <ul class="ingredients">
-            <li v-for="ingredient in ingredients" @click="ingredientClicked(ingredient)" :key="ingredient">
+            <li v-for="ingredient in ingredients" @mousedown="ingredientClicked(ingredient)" :key="ingredient">
                 {{ ingredient }}
             </li>
         </ul>
+        <div id="activeIngredient" :style="{ left: mousePos.x-96 + 'px', top: mousePos.y-21 + 'px' }" v-if="activeIngredient">
+            {{ activeIngredient }}
+        </div>
     </main>
 </body>
 </html>
