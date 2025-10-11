@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potion Brewer</title>
+    <link rel="stylesheet" href="./styles.css">
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./index.js" defer></script>
+</head>
+<body v-cloak>
+    <header>
+        <h1>Potion Brewer</h1>
+    </header>
+    <main>
+        <div class="cauldron">
+            <p>lorem500</p>
+        </div>
+        <ul class="ingredients">
+            <li v-for="ingredient in ingredients" @click="ingredientClicked(ingredient)" :key="ingredient">
+                {{ ingredient }}
+            </li>
+        </ul>
+    </main>
+</body>
+</html>

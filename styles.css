@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Yusei+Magic&display=swap');
+
+[v-cloak] {
+    opacity: 0;
+}
+
+body {
+    font-family: "Yusei Magic", sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #181818;
+    color: #f0f0f0;
+}
+
+header {
+    background-color: #2a3d2a;
+    color: #a8ffb8;
+    height: 40px;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid #3a5d3a;
+}
+
+header h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 30px;
+    text-shadow: 1px 1px 2px #1a2d1a;
+}
+
+main {
+    padding: 12px;
+    display: flex;
+    height: calc(100vh - 62px - 24px);
+}
+.ingredients {
+    list-style-type: none;
+    padding: 20px;
+    margin: 0;
+    width: 200px;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-y: scroll;
+    border: 1px solid #444;
+    background-color: #2e2e2e;
+    box-shadow: 0 0 10px #444;
+}
+
+.ingredients::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ingredients::-webkit-scrollbar-track {
+    background: #2e2e2e;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+
+.ingredients::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+.ingredients li, #activeIngredient {
+    padding: 8px;
+    margin-bottom: 8px;
+    background-color: #3a3a3a;
+    color: #b0ffb0;
+    border: 1px solid #555;
+    border-radius: 10px;
+    text-align: center;
+    cursor: grab;
+    transition-duration: 0.2s;
+}
+
+.ingredients li:hover {
+    background-color: #4a4a4a;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #555;
+}
+
+
+.ingredients li:active, #activeIngredient {
+    cursor: grabbing;
+}
+
+
+#activeIngredient {
+    position: absolute;
+}
+
+
+.cauldron {
+    flex-grow: 1;
+    margin-left: 0px;
+    border: 2px solid #444;
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    background-color: #2e2e2e;
+    position: relative;
+    overflow: hidden;
+}
