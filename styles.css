@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Yusei+Magic&display=swap');
 
+
+/*---------- header and body ----------*/
+
+
 [v-cloak] {
     opacity: 0;
 }
@@ -36,6 +40,9 @@ main {
     height: calc(100vh - 62px - 24px);
 }
 
+
+/*---------- ingredients list ----------*/
+
 .ingredients {
     list-style-type: none;
     padding: 20px;
@@ -66,7 +73,7 @@ main {
     background: #777;
 }
 
-.ingredients li, #activeIngredient {
+.ingredients li, .storedIngredient, #activeIngredient {
     padding: 8px;
     margin-bottom: 8px;
     background-color: #3a3a3a;
@@ -78,7 +85,7 @@ main {
     transition-duration: 0.2s;
 }
 
-.ingredients li:hover {
+.ingredients li:hover, .storedIngredient:hover, #activeIngredient {
     background-color: #4a4a4a;
     transform: scale(1.1);
     box-shadow: 0 0 10px #555;
@@ -90,20 +97,24 @@ main {
 }
 
 
-#activeIngredient {
+#activeIngredient, .storedIngredient {
+    display: block;
     position: absolute;
     width: 192px;
-    transition-duration: 0s;
+}
+
+#activeIngredient {
+    transition: 0s;
+    z-index: 1000;
 }
 
 
-.cauldron {
+#cauldron {
     flex-grow: 1;
     margin-left: 0px;
     border: 2px solid #444;
     border-right: none;
     border-radius: 10px 0 0 10px;
     background-color: #2e2e2e;
-    position: relative;
     overflow: hidden;
 }
