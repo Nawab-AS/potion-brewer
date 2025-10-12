@@ -1,6 +1,7 @@
 const { createApp, ref } = Vue;
 
-activeIngredient = ref(null);
+const activeIngredient = ref(null);
+const activeIngredientOutsite = ref(false);
 const ingredients = ref([
     'Water',
     'Salt',
@@ -12,6 +13,12 @@ for (let i = 1; i <= 50; i++) {
     ingredients.value.push(`Ingredient ${i}`);
 }
 
+if (localStorage.getItem('ingredients')) {
+    ingredients.value = JSON.parse(localStorage.getItem('ingredients')); // overwrites ingredients if found in local storage
+}
+if (localStorage.getItem('storedIngredients')) {
+    storedIngredients.value = JSON.parse(localStorage.getItem('storedIngredients')); // overwrites ingredients if found in local storage
+}
 
 
 // get cauldron coordinates
@@ -22,12 +29,26 @@ const getCauldronPos = () => {
 window.addEventListener('resize', getCauldronPos);
 getCauldronPos();
 
+function isPointInCauldron(x, y) {
+    if (x - 100 >= cauldronPos.left && x + 100 <= cauldronPos.right && y - 25 >= cauldronPos.top && y + 25 <= cauldronPos.bottom) {
+        return true;
+    }
+    return false;
+}
+
 
 
 // Mouse position tracking
 let mousePos = ref({x: 0, y: 0});
 document.addEventListener('mousemove', (event) => {
     mousePos.value = {x: event.clientX, y: event.clientY};
+    if (activeIngredient.value) {
+        if (isPointInCauldron(mousePos.value.x, mousePos.value.y)) {
+            activeIngredientOutsite.value = false;
+        } else {
+            activeIngredientOutsite.value = true;
+        }
+    }
 });
 
 document.addEventListener('mousedown', (e) => {
@@ -37,28 +58,57 @@ document.addEventListener('mouseup', (e) => {
     e.preventDefault();
     if (!activeIngredient.value) return; // continue if an ingredient is being carried
 
-    if (mousePos.value.x - 100 >= cauldronPos.left && mousePos.value.x + 100 <= cauldronPos.right &&
-            mousePos.value.y - 25 >= cauldronPos.top && mousePos.value.y + 25 <= cauldronPos.bottom) {
-        // mouse in in cauldron
+    if (isPointInCauldron(mousePos.value.x, mousePos.value.y)) {
+        let mousePos2 = {x: mousePos.value.x-96, y: mousePos.value.y-21};
+        let newName = activeIngredient.value;
+
+        // merge ingredients if they are close enough
+        for (let i = 0; i < storedIngredients.value.length; i++) {
+            const otherIngredient = storedIngredients.value[i];
+
+            if (Math.abs(otherIngredient.x - mousePos2.x) < 192 && Math.abs(otherIngredient.y - mousePos2.y) < 52) {
+                otherIngredient.name = merge(newName, otherIngredient.name);
+
+                // position other ingredient on the midpoint of the two ingredients
+                otherIngredient.x = (otherIngredient.x + mousePos2.x) / 2;
+                otherIngredient.y = (otherIngredient.y + mousePos2.y) / 2;
+                activeIngredient.value = null;
+                return;
+            }
+        }
+
         storedIngredients.value.push({
-            name: activeIngredient.value,
-            x: mousePos.value.x-96,
-            y: mousePos.value.y-21,
-            id: Date.now(),
+            name: newName,
+            x: mousePos2.x,
+            y: mousePos2.y,
+            id: Date.now(), // I mean it *is* unique
         });
 
     }
     activeIngredient.value = null;
 });
 
-
-
 function ingredientClicked(ingredient) {
-    console.log('Clicked on ingredient:', ingredient);
     activeIngredient.value = ingredient;
 }
 
 
+function storedIngredientClicked(storedIngredientID) {
+    const ingredientIndex = storedIngredients.value.findIndex(ingredient => ingredient.id == storedIngredientID);
+    if (ingredientIndex === -1) return; // ingredient not found
+
+    activeIngredient.value = storedIngredients.value[ingredientIndex].name;
+    storedIngredients.value.splice(ingredientIndex, 1);
+}
+
+
+function merge(ingredient1, ingredient2) {
+    // TODO: make a proper merge
+    return ingredient1.substr(0, 5)+ingredient2.substr(5);
+}
+
+
+// mount Vue app
 createApp({
     setup() {
         return {
@@ -66,7 +116,17 @@ createApp({
             activeIngredient,
             storedIngredients,
             ingredientClicked,
+            storedIngredientClicked,
             mousePos,
+            activeIngredientOutsite,
         };
     }
 }).mount('body');
+
+
+
+// save the ingredients and caludron to local storage when closed
+window.addEventListener('beforeunload', () => {
+    localStorage.setItem('storedIngredients', JSON.stringify(storedIngredients.value));
+    localStorage.setItem('ingredients', JSON.stringify(ingredients.value));
+});

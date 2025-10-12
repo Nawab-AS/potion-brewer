@@ -108,6 +108,11 @@ main {
     z-index: 1000;
 }
 
+#activeIngredient.outside {
+    background-color: #ff8080;
+    font-weight: bold;
+}
+
 
 #cauldron {
     flex-grow: 1;

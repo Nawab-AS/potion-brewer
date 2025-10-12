@@ -16,7 +16,8 @@
     <main>
         <div id="cauldron">
             <div class="storedIngredient" v-for="storedIngredient in storedIngredients" :key="storedIngredient" 
-                    :style="{ left: storedIngredient.x + 'px', top: storedIngredient.y + 'px' }">
+                    :style="{ left: storedIngredient.x + 'px', top: storedIngredient.y + 'px' }"
+                    @mousedown="storedIngredientClicked(storedIngredient.id)">
                 {{ storedIngredient.name }}
             </div>
         </div>
@@ -25,7 +26,8 @@
                 {{ ingredient }}
             </li>
         </ul>
-        <div id="activeIngredient":style="{ left: mousePos.x-96 + 'px', top: mousePos.y-21 + 'px' }" v-if="activeIngredient">
+        <div id="activeIngredient":style="{ left: mousePos.x-96 + 'px', top: mousePos.y-21 + 'px' }" v-if="activeIngredient"
+            :class="{ outside: activeIngredientOutsite }">
             {{ activeIngredient }}
         </div>
     </main>
