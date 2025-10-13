@@ -1,5 +1,3 @@
-![hackatime](https://hackatime-badge.hackclub.com/U0857UWECTS/potion-brewer)
-
 # Potion Brewer
 
 A simple clone of Little Alchemy, but with the theme of *Magic*
