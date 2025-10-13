@@ -133,4 +133,11 @@ main {
     color: #b0ffb0;
     border: 1px solid #555;
     border-radius: 10px;
+    transition-duration: 0.2s;
+}
+
+#reset_button:hover {
+    background-color: #a10000;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px #ff0000;
 }

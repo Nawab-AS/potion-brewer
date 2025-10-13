@@ -20,7 +20,7 @@ if (localStorage.getItem('storedIngredients')) {
 
 function reset() {
     if (confirm("Are you sure you want to reset? This will delete all your ingredients forever (a long time).")) {
-        ingredients.value = ['Water', 'Earth', 'Air', 'Fire'];
+        ingredients.value = ['air', 'bone', 'crystal', 'earth', 'feather', 'fire', 'gold', 'herbs', 'light', 'magic', 'shadow', 'spirit', 'water'];
         storedIngredients.value = [];
         localStorage.removeItem('ingredients');
         localStorage.removeItem('storedIngredients');
