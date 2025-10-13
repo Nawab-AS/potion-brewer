@@ -56,23 +56,6 @@ main {
     box-shadow: 0 0 10px #444;
 }
 
-.ingredients::-webkit-scrollbar {
-    width: 8px;
-}
-
-.ingredients::-webkit-scrollbar-track {
-    background: #2e2e2e;
-}
-
-.ingredients::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 4px;
-}
-
-.ingredients::-webkit-scrollbar-thumb:hover {
-    background: #777;
-}
-
 .ingredients li, .storedIngredient, #activeIngredient {
     padding: 8px;
     margin-bottom: 8px;
@@ -101,6 +84,7 @@ main {
     display: block;
     position: absolute;
     width: 192px;
+    z-index: 500;
 }
 
 #activeIngredient {
@@ -113,6 +97,21 @@ main {
     font-weight: bold;
 }
 
+/*---------- ingredients list scrollbar ----------*/
+
+
+.ingredients::-webkit-scrollbar { width: 8px; }
+
+.ingredients::-webkit-scrollbar-track { background: #2e2e2e; }
+
+.ingredients::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+
+.ingredients::-webkit-scrollbar-thumb:hover { background: #777; }
+
+
+
+/*---------- cauldron ----------*/
+
 
 #cauldron {
     flex-grow: 1;
@@ -123,6 +122,10 @@ main {
     background-color: #2e2e2e;
     overflow: hidden;
 }
+
+
+
+/*---------- reset button ----------*/
 
 
 #reset_button {
@@ -140,4 +143,16 @@ main {
     background-color: #a10000;
     transform: scale(1.1);
     box-shadow: 0 0 10px #ff0000;
+    border-color: #ff5555;
+}
+
+
+/*---------- discovered ingredients counter ----------*/
+#ingredientFound {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-size: 3rem;
+    color: #676767;
+    z-index: 10;
 }

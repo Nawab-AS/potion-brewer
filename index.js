@@ -1,8 +1,9 @@
-const { createApp, ref } = Vue;
+const { createApp, ref, computed } = Vue;
 
 const activeIngredient = ref(null);
 const activeIngredientOutsite = ref(false);
 const ingredients = ref([]);
+const ingredientsFound = computed(() => ingredients.value.length);
 const storedIngredients = ref([]);
 
 // initialize ingredients
@@ -111,11 +112,13 @@ function storedIngredientClicked(storedIngredientID) {
 
 
 // load merges from merges.json
+const totalIngredients = ref(0);
 let merges = {};
 fetch('./merges.json')
     .then(response => response.json())
     .then(data => {
         merges = data.merges;
+        totalIngredients.value = merges.length + 13; // 13 default ingredients
     });
 
 
@@ -142,6 +145,8 @@ createApp({
             mousePos,
             activeIngredientOutsite,
             reset,
+            ingredientsFound,
+            totalIngredients
         };
     }
 }).mount('body');

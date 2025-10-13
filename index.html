@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./styles.css">
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./loadMerges.js"></script>
     <script src="./index.js" defer></script>
 </head>
 <body v-cloak>
@@ -20,6 +21,7 @@
                     @mousedown="storedIngredientClicked(storedIngredient.id)">
                 {{ storedIngredient.name }}
             </div>
+            <div id="ingredientFound">{{ ingredientsFound }}/{{ totalIngredients }} Found</div>
         </div>
         <ul class="ingredients">
             <li v-for="ingredient in ingredients" @mousedown="ingredientClicked(ingredient)" :key="ingredient">
