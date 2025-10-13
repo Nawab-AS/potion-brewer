@@ -2,14 +2,11 @@ const { createApp, ref } = Vue;
 
 const activeIngredient = ref(null);
 const activeIngredientOutsite = ref(false);
-const ingredients = ref([
-    'Water',
-    'Salt',
-]);
+const ingredients = ref([]);
 const storedIngredients = ref([]);
 
 // initialize ingredients
-for (let i = 1; i <= 50; i++) {
+for (let i = 1; i <= 2; i++) {
     ingredients.value.push(`Ingredient ${i}`);
 }
 
@@ -20,6 +17,15 @@ if (localStorage.getItem('storedIngredients')) {
     storedIngredients.value = JSON.parse(localStorage.getItem('storedIngredients')); // overwrites ingredients if found in local storage
 }
 
+
+function reset() {
+    if (confirm("Are you sure you want to reset? This will delete all your ingredients forever (a long time).")) {
+        ingredients.value = ['Water', 'Earth', 'Air', 'Fire'];
+        storedIngredients.value = [];
+        localStorage.removeItem('ingredients');
+        localStorage.removeItem('storedIngredients');
+    }
+}
 
 // get cauldron coordinates
 let cauldronPos = {};
@@ -60,25 +66,27 @@ document.addEventListener('mouseup', (e) => {
 
     if (isPointInCauldron(mousePos.value.x, mousePos.value.y)) {
         let mousePos2 = {x: mousePos.value.x-96, y: mousePos.value.y-21};
-        let newName = activeIngredient.value;
 
         // merge ingredients if they are close enough
         for (let i = 0; i < storedIngredients.value.length; i++) {
             const otherIngredient = storedIngredients.value[i];
 
             if (Math.abs(otherIngredient.x - mousePos2.x) < 192 && Math.abs(otherIngredient.y - mousePos2.y) < 52) {
-                otherIngredient.name = merge(newName, otherIngredient.name);
+                let newName = merge(activeIngredient.value, otherIngredient.name);
+                if (!newName) break;
+                
+                otherIngredient.name = newName;
 
                 // position other ingredient on the midpoint of the two ingredients
                 otherIngredient.x = (otherIngredient.x + mousePos2.x) / 2;
                 otherIngredient.y = (otherIngredient.y + mousePos2.y) / 2;
                 activeIngredient.value = null;
-                return;
+                return; // otherIngredient becomes the new Ingredient
             }
         }
 
         storedIngredients.value.push({
-            name: newName,
+            name: activeIngredient.value,
             x: mousePos2.x,
             y: mousePos2.y,
             id: Date.now(), // I mean it *is* unique
@@ -102,9 +110,23 @@ function storedIngredientClicked(storedIngredientID) {
 }
 
 
+// load merges from merges.json
+let merges = {};
+fetch('./merges.json')
+    .then(response => response.json())
+    .then(data => {
+        merges = data.merges;
+    });
+
+
 function merge(ingredient1, ingredient2) {
-    // TODO: make a proper merge
-    return ingredient1.substr(0, 5)+ingredient2.substr(5);
+    const result = merges.find(merge => 
+        (merge.ingredients.includes(ingredient1) && merge.ingredients.includes(ingredient2))
+    );
+    if (!result) return null;
+
+    if (!ingredients.value.includes(result.result)) ingredients.value.push(result.result);
+    return result.result;
 }
 
 
@@ -119,6 +141,7 @@ createApp({
             storedIngredientClicked,
             mousePos,
             activeIngredientOutsite,
+            reset,
         };
     }
 }).mount('body');

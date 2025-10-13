@@ -25,6 +25,7 @@
             <li v-for="ingredient in ingredients" @mousedown="ingredientClicked(ingredient)" :key="ingredient">
                 {{ ingredient }}
             </li>
+            <button @click="reset()" id="reset_button">Reset</button>
         </ul>
         <div id="activeIngredient":style="{ left: mousePos.x-96 + 'px', top: mousePos.y-21 + 'px' }" v-if="activeIngredient"
             :class="{ outside: activeIngredientOutsite }">
