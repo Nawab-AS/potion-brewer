@@ -6,11 +6,6 @@ const ingredients = ref([]);
 const ingredientsFound = computed(() => ingredients.value.length);
 const storedIngredients = ref([]);
 
-// initialize ingredients
-for (let i = 1; i <= 2; i++) {
-    ingredients.value.push(`Ingredient ${i}`);
-}
-
 if (localStorage.getItem('ingredients')) {
     ingredients.value = JSON.parse(localStorage.getItem('ingredients')); // overwrites ingredients if found in local storage
 }
@@ -18,14 +13,19 @@ if (localStorage.getItem('storedIngredients')) {
     storedIngredients.value = JSON.parse(localStorage.getItem('storedIngredients')); // overwrites ingredients if found in local storage
 }
 
+if (ingredients.value == [] && storedIngredients.value == []) {
+    reset(true);
+}
 
-function reset() {
-    if (confirm("Are you sure you want to reset? This will delete all your ingredients forever (a long time).")) {
+
+function reset(bypass=false) {
+    if (!bypass) {
+        if (!confirm("Are you sure you want to reset? This will delete all your ingredients forever (a long time).")) return;
+    }
         ingredients.value = ['air', 'bone', 'crystal', 'earth', 'feather', 'fire', 'gold', 'herbs', 'light', 'magic', 'shadow', 'spirit', 'water'];
         storedIngredients.value = [];
         localStorage.removeItem('ingredients');
         localStorage.removeItem('storedIngredients');
-    }
 }
 
 // get cauldron coordinates
