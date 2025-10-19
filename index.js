@@ -2,7 +2,7 @@ const { createApp, ref, computed } = Vue;
 
 const activeIngredient = ref(null);
 const activeIngredientOutsite = ref(false);
-const ingredients = ref(['air', 'bone', 'crystal', 'earth', 'feather', 'fire', 'gold', 'herbs', 'light', 'magic', 'shadow', 'spirit', 'water'];);
+const ingredients = ref(['air', 'bone', 'crystal', 'earth', 'feather', 'fire', 'gold', 'herbs', 'light', 'magic', 'shadow', 'spirit', 'water']);
 const ingredientsFound = computed(() => ingredients.value.length);
 const storedIngredients = ref([]);
 
