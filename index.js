@@ -2,7 +2,7 @@ const { createApp, ref, computed } = Vue;
 
 const activeIngredient = ref(null);
 const activeIngredientOutsite = ref(false);
-const ingredients = ref([]);
+const ingredients = ref(['air', 'bone', 'crystal', 'earth', 'feather', 'fire', 'gold', 'herbs', 'light', 'magic', 'shadow', 'spirit', 'water'];);
 const ingredientsFound = computed(() => ingredients.value.length);
 const storedIngredients = ref([]);
 
@@ -13,19 +13,13 @@ if (localStorage.getItem('storedIngredients')) {
     storedIngredients.value = JSON.parse(localStorage.getItem('storedIngredients')); // overwrites ingredients if found in local storage
 }
 
-if (ingredients.value == [] && storedIngredients.value == []) {
-    reset(true);
-}
 
-
-function reset(bypass=false) {
-    if (!bypass) {
-        if (!confirm("Are you sure you want to reset? This will delete all your ingredients forever (a long time).")) return;
-    }
-        ingredients.value = ['air', 'bone', 'crystal', 'earth', 'feather', 'fire', 'gold', 'herbs', 'light', 'magic', 'shadow', 'spirit', 'water'];
-        storedIngredients.value = [];
-        localStorage.removeItem('ingredients');
-        localStorage.removeItem('storedIngredients');
+function reset() {
+    if (!confirm("Are you sure you want to reset? This will delete all your ingredients forever (a long time).")) return;
+    ingredients.value = ['air', 'bone', 'crystal', 'earth', 'feather', 'fire', 'gold', 'herbs', 'light', 'magic', 'shadow', 'spirit', 'water'];
+    storedIngredients.value = [];
+    localStorage.removeItem('ingredients');
+    localStorage.removeItem('storedIngredients');
 }
 
 // get cauldron coordinates
